@@ -1,13 +1,13 @@
-# The code shows how a TSX stock has performed over the past two years, represented in numbers and a chart
+# The code shows how a TSX stock has performed over Nov 2024-2026, represented in numbers and a chart
 import yfinance as yf
 import matplotlib.pyplot as plt
 
-start_date = "2024-11-01" # Studying a 2 year period, dates are fixed for the research paper
+start_date = "2024-11-01" # Studying Nov 2024-2026 period, dates are fixed for the research paper
 end_date = "2026-11-07"
-while True: # Introduce a loop which checks until a valid TSX ticker is found
+while True: #  Keeps asking until a valid TSX ticker is found
     ticker = input("Choose a ticker to check daily and total returns\nEnter a TSX ticker: ").upper()
     if not ticker.endswith(".TO"): # Add .TO if not added because TSX stocks need it on Yahoo Finance
-       ticker = ticker + ".TO"
+        ticker = ticker + ".TO"
     data = yf.download(
         tickers=ticker,
         start=start_date,
@@ -18,13 +18,14 @@ while True: # Introduce a loop which checks until a valid TSX ticker is found
         multi_level_index=False,
     )
     
-    if data.empty: # Checks if athe download is empty. Could be a bad ticker or no internet
+    if data.empty: # Checks if the download is empty. Could be a bad ticker or no internet
         print("No data found. Check the ticker or internet connection")
     else:
         break
 
 prices = data["Close"]
-returns = prices.pct_change().dropna() # Daily returns is how much the price changed from one day to the next. .dropna() is placed because the first day has no previous day
+# Daily returns is how much the price changed from one day to the next. .dropna() is placed because the first day has no previous day
+returns = prices.pct_change().dropna() 
 print(returns)
 
 overall_return = prices.iloc[-1] / prices.iloc[0] - 1 # Total return , used the formula last / first -1
